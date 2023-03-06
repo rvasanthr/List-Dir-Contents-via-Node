@@ -15,5 +15,14 @@ fs.readdir(process.cwd(), (error, fileNames) => {
         // return;
         // throw new Error(err);
     }
-    console.log(fileNames);
+    // console.log(fileNames);
+    // Out of order response approach
+    for (let fileName of fileNames) {
+        fs.lstat(fileName, (error, stats) => {
+            if (error) {
+                console.log(error);
+            }
+            console.log(fileName, stats.isFile());
+        });
+    }
 });
