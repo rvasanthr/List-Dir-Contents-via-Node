@@ -2,7 +2,9 @@
 // To use FileSystem from POSIX
 const fs = require('fs');
 // Getting files from directory
-fs.readdir('.', (error, fileNames) => {
+fs.readdir(process.cwd(), (error, fileNames) => {
+    // readdir first argument is path
+    // Callback Fn details below   
     // Takes Error, Files as arguments
     // Returns an Err object if something is wrong or will return null if all ok
     // second argument: array of string with the names of files in the path passed
