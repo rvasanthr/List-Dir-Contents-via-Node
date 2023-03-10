@@ -3,7 +3,10 @@
 // To use FileSystem from POSIX
 // const { rejects } = require('assert');
 const fs = require('fs');
+const util = require('util');
 // const { resolve } = require('path');
+// Using inbuilt lstat via util, combo 2
+const lstat = util.promisify(fs.lstat);
 // Getting files from directory
 fs.readdir(process.cwd(), async (error, fileNames) => {
     // readdir first argument is path
@@ -22,11 +25,11 @@ fs.readdir(process.cwd(), async (error, fileNames) => {
     }
 });
 // lstat and promise combo 1
-const lstat = fileName => {
-    return new Promise((resolve, reject) => {
-        fs.lstat(fileName, (error, stats) => {
-            if (error) reject(error);
-            resolve(stats);
-        });
-    });
-}
+// const lstat = fileName => {
+//     return new Promise((resolve, reject) => {
+//         fs.lstat(fileName, (error, stats) => {
+//             if (error) reject(error);
+//             resolve(stats);
+//         });
+//     });
+// }
