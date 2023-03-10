@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // including the posix filesystem
-const fs = require('fs');
+import { promises, readdir } from 'fs';
 // Lstat using 3rd way
-const { lstat } = fs.promises;
+const { lstat } = promises;
 // Using chalk
-const chalk = require('chalk');
+import chalk from 'chalk';
 // Getting files from directory
-fs.readdir(process.cwd(), async (error, fileNames) => {
+readdir(process.cwd(), async (error, fileNames) => {
     // Error Handling
     if (error) console.log(error);
     // Array to hold all lstat promise calls
@@ -15,6 +15,13 @@ fs.readdir(process.cwd(), async (error, fileNames) => {
     const allStats = await Promise.all(statPromises);
     // Looping over the stats and displaying the files
     for (let i = 0; i < fileNames.length; i++) {
-        console.log(fileNames[i], allStats[i].isFile());
+        // If file
+        if (allStats[i].isFile()) {
+            console.log((fileNames[i]));
+        }
+        // If folder
+        if (allStats[i].isDirectory()) {
+            console.log(chalk.inverse(fileNames[i]));
+        }
     }
 });
