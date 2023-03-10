@@ -16,15 +16,25 @@ fs.readdir(process.cwd(), async (error, fileNames) => {
     // Takes Error, array of Files as arguments
     // Returns an Err object if something is wrong or null if all ok
     // second argument: array of string with the names of files in the path passed
-    for (let fileName of fileNames) {
-        // Processing errors if encountered for each async and await response
-        try {
-            const stats = await lstat(fileName);
-            console.log(fileName, stats.isFile());
-        } catch (error) {
-            console.log(error);
-        }
+    // Error Handling
+    if (error) console.log(error);
+    // Array to hold all lstat promise calls
+    const statPromises = fileNames.map(fileName => (lstat(fileName)));
+    // Invoking all promises simultaneously (saves time)
+    const allStats = await Promise.all(statPromises);
+    // Looping over the stats and displaying the files
+    for (let i = 0; i < fileNames.length; i++) {
+        console.log(fileNames[i], allStats[i].isFile());
     }
+    // for (let fileName of fileNames) {
+    //     // Processing errors if encountered for each async and await response
+    //     try {
+    //         const stats = await lstat(fileName);
+    //         console.log(fileName, stats.isFile());
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 });
 // lstat and promise combo 1
 // const lstat = fileName => {
