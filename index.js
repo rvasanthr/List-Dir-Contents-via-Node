@@ -5,12 +5,16 @@ import { promises, readdir } from 'fs';
 const { lstat } = promises;
 // Using chalk
 import chalk from 'chalk';
+// Accessing path from node standard library
+import path from 'path';
+// Getting the target directory - if exists or else Current Working Directory
+const targetDir = process.argv[2] || process.cwd();
 // Getting files from directory
-readdir(process.cwd(), async (error, fileNames) => {
+readdir(targetDir, async (error, fileNames) => {
     // Error Handling
     if (error) console.log(error);
     // Array to hold all lstat promise calls
-    const statPromises = fileNames.map(fileName => (lstat(fileName)));
+    const statPromises = fileNames.map(fileName => (lstat((path.join(targetDir, fileName)))));
     // Invoking all promises simultaneously (saves time)
     const allStats = await Promise.all(statPromises);
     // Looping over the stats and displaying the files
